@@ -1,0 +1,4 @@
+[submodule "3rdparty/Megatron-LM"]
+	path = 3rdparty/Megatron-LM
+	url = https://github.com/YigongQin/Megatron-LM.git
+	branch = yigongq/infopt-cutedsl-w4a16
