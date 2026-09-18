@@ -98,8 +98,20 @@ dependencies = [
     "mlflow>=3.15.1",   # To address CVE-2025-15031
     "comet-ml>=3.50.0",
     "torch>=2.6.0",
-    "flashinfer-python==0.6.8.post1",  # keep flashinfer-python and flashinfer-cubin in lockstep:
-    "flashinfer-cubin==0.6.8.post1",   # the runtime version-match check fails otherwise
+    # Floor, not an exact pin: NeMo RL's mcore extra takes flashinfer from a git
+    # rev (0.7.0) for flashinfer.moe_ep, the expert-parallel megakernels, which
+    # no 0.6.x release contains. An exact pin here makes that unsatisfiable.
+    #
+    # flashinfer-cubin is dropped rather than relaxed, for the reason the
+    # original comment gave: the two are checked against each other at runtime,
+    # and there is no cubin wheel for a git rev, so any version installed here
+    # would fail that check against 0.7.0. The megakernels are compiled by
+    # CuTeDSL and read no prebuilt cubin; FlashInfer's cubin-backed kernels fall
+    # back to downloading artifacts at runtime.
+    #
+    # Local force pending a Megatron-Bridge uplift to a flashinfer release that
+    # ships moe_ep.
+    "flashinfer-python>=0.6.8.post1",
     "fast-hadamard-transform>=1.1.0",
 ]
 

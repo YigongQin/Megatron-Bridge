@@ -1,3 +1,10 @@
 [submodule "3rdparty/Megatron-LM"]
 	path = 3rdparty/Megatron-LM
-	url = https://github.com/NVIDIA/Megatron-LM.git
+	# Fork, not NVIDIA/Megatron-LM: the mega train/generation parity work is not
+	# upstream yet, and a nested submodule's URL can only be set here -- the
+	# parent (NeMo RL) cannot override it, so sharing this branch requires a
+	# Megatron-Bridge fork whether or not Bridge itself changed.
+	url = https://github.com/YigongQin/Megatron-LM.git
+	# Named so `git clone --recursive` can reach the commit. Without it the
+	# clone resolves the recorded SHA against the default branch only.
+	branch = yigongq/inf-backend
