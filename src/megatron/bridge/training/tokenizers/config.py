@@ -68,7 +68,11 @@ class TokenizerConfig(MTrainTokenizerConfig):
     impractical."""
 
     tokenizer_prompt_format: Optional[str] = None
-    """Prompt format for the tokenizer."""
+    """Prompt format for the tokenizer.
+
+    This is Bridge's canonical prompt-format setting. When set, it also populates the inherited
+    MCore ``sft_tokenizer_prompt_format`` field that MCore's SFT tokenizer builder reads.
+    """
 
     image_tag_type: Optional[str] = None
     """Image tag to apply, if any. For example <img><image></img>."""
@@ -79,8 +83,11 @@ class TokenizerConfig(MTrainTokenizerConfig):
         """Sync with MCore values"""
         # Don't pad vocab size since MBridge does it's own padding
         self.pad_vocab_size = False
-        # MCore's SFT tokenizer builder reads sft_tokenizer_prompt_format.
-        self.sft_tokenizer_prompt_format = self.tokenizer_prompt_format
+
+        # MCore's SFT tokenizer builder reads ``sft_tokenizer_prompt_format``; keep it in sync with
+        # Bridge's canonical ``tokenizer_prompt_format`` when that is set.
+        if self.tokenizer_prompt_format is not None:
+            self.sft_tokenizer_prompt_format = self.tokenizer_prompt_format
 
         # HuggingFace tokenizer kwargs
         self.tokenizer_hf_no_use_fast = not self.hf_tokenizer_kwargs.get("use_fast", True)
